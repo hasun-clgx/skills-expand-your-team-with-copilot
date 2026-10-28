@@ -40,6 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let searchQuery = "";
   let currentDay = "";
   let currentTimeRange = "";
+  const sharedActivityName = new URL(window.location.href).searchParams.get("activity");
+  let sharedActivityFocused = false;
 
   // Authentication state
   let currentUser = null;
@@ -472,12 +474,28 @@ document.addEventListener("DOMContentLoaded", () => {
     Object.entries(filteredActivities).forEach(([name, details]) => {
       renderActivityCard(name, details);
     });
+
+    if (sharedActivityName && !sharedActivityFocused) {
+      const sharedCard = Array.from(activitiesList.children).find(
+        (card) => card.dataset.activity === sharedActivityName
+      );
+      if (sharedCard) {
+        sharedCard.focus({ preventScroll: true });
+        sharedCard.scrollIntoView({ block: "center" });
+        sharedActivityFocused = true;
+      }
+    }
   }
 
   // Function to render a single activity card
   function renderActivityCard(name, details) {
     const activityCard = document.createElement("div");
     activityCard.className = "activity-card";
+    activityCard.dataset.activity = name;
+    if (name === sharedActivityName) {
+      activityCard.classList.add("shared-activity");
+      activityCard.tabIndex = -1;
+    }
 
     // Calculate spots and capacity
     const totalSpots = details.max_participants;
@@ -589,6 +607,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    activityCard.appendChild(
+      window.activitySharing.createControls(name, formattedSchedule)
+    );
     activitiesList.appendChild(activityCard);
   }
 
