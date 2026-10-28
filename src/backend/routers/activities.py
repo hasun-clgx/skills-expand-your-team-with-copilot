@@ -4,7 +4,7 @@ Endpoints for the High School Management System API
 
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import RedirectResponse
-from typing import Dict, Any, Optional, List, Literal
+from typing import Dict, Any, Optional, List
 
 from ..database import activities_collection, teachers_collection
 
@@ -18,8 +18,7 @@ router = APIRouter(
 def get_activities(
     day: Optional[str] = None,
     start_time: Optional[str] = None,
-    end_time: Optional[str] = None,
-    difficulty: Optional[Literal["Beginner", "Intermediate", "Advanced", "All"]] = None
+    end_time: Optional[str] = None
 ) -> Dict[str, Any]:
     """
     Get all activities with their details, with optional filtering by day and time
@@ -27,7 +26,6 @@ def get_activities(
     - day: Filter activities occurring on this day (e.g., 'Monday', 'Tuesday')
     - start_time: Filter activities starting at or after this time (24-hour format, e.g., '14:30')
     - end_time: Filter activities ending at or before this time (24-hour format, e.g., '17:00')
-    - difficulty: Filter by level, including activities with no specified level, or by 'All' for unlevelled activities only
     """
     # Build the query based on provided filters
     query = {}
@@ -40,11 +38,6 @@ def get_activities(
     
     if end_time:
         query["schedule_details.end_time"] = {"$lte": end_time}
-
-    if difficulty == "All":
-        query["difficulty"] = {"$in": [None, ""]}
-    elif difficulty:
-        query["difficulty"] = {"$in": [difficulty, None, ""]}
     
     # Query the database
     activities = {}
