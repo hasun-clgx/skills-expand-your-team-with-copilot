@@ -32,6 +32,33 @@
   --info-light: #d1ecf1;
 }
 
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --primary: #9fa8ff;
+  --primary-light: #c5caff;
+  --primary-dark: #3949ab;
+  --primary-text: #171923;
+  --secondary: #ff9f43;
+  --secondary-light: #ffbd73;
+  --secondary-dark: #d65b00;
+  --secondary-text: #ffffff;
+  --background: #15171c;
+  --surface: #202329;
+  --text-primary: #f1f3f5;
+  --text-secondary: #b0b5bf;
+  --border: #3b404a;
+  --border-light: #30353e;
+  --border-focus: #596170;
+  --success: #66bb6a;
+  --success-light: #1f3825;
+  --warning: #ffb74d;
+  --warning-light: #493617;
+  --error: #ef5350;
+  --error-light: #421e22;
+  --info: #80deea;
+  --info-light: #18383d;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -347,7 +374,7 @@ section h3 {
 
 button {
   background-color: var(--primary);
-  color: white;
+  color: var(--primary-text);
   border: none;
   padding: 6px 12px;
   font-size: 0.85rem;
@@ -552,6 +579,12 @@ footer {
   transition: all 0.3s ease;
 }
 
+input {
+  color: var(--text-primary);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+}
+
 .search-box input:focus {
   outline: none;
   border-color: var(--primary-light);
@@ -563,7 +596,7 @@ footer {
   height: 100%; /* Make button match input height */
   min-height: 32px; /* Ensure minimum clickable area */
   background: var(--primary);
-  color: white;
+  color: var(--primary-text);
   border: none;
   border-radius: 0 20px 20px 0;
   cursor: pointer;
@@ -620,7 +653,7 @@ footer {
 .day-filter.active,
 .time-filter.active {
   background-color: var(--primary);
-  color: white;
+  color: var(--primary-text);
   border-color: var(--primary-dark);
 }
 
@@ -628,7 +661,7 @@ footer {
 .day-filter:hover,
 .time-filter:hover {
   background-color: var(--primary-light);
-  color: white;
+  color: var(--primary-text);
 }
 
 .time-filters {
@@ -675,6 +708,9 @@ footer {
   position: absolute;
   top: 10px;
   right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 #user-status {
@@ -721,4 +757,13 @@ footer {
 
 #logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 767px) {
+  #user-controls {
+    position: static;
+    order: -1;
+    align-self: flex-end;
+    margin: 0 15px 8px 0;
+  }
 }
